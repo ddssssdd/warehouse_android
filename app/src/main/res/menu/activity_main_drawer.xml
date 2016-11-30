@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Camera" />
+        <item
+            android:id="@+id/nav_in"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="In" />
+        <item
+            android:id="@+id/nav_out"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Out" />
+        <item
+            android:id="@+id/nav_product"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Product" />
+    </group>
+
+    <item android:title="System">
+        <menu>
+            <item
+                android:id="@+id/nav_client"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Client" />
+            <item
+                android:id="@+id/nav_vendor"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Vendor" />
+        </menu>
+    </item>
+
+</menu>
