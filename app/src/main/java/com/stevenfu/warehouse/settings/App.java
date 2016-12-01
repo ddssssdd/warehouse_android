@@ -17,6 +17,16 @@ public class App {
         boolean result = settings.getBoolean("IsLogin",false);
         return result;
     }
+    public static String Username(Activity context)
+    {
+        SharedPreferences settings = context.getSharedPreferences(PREFS,0);
+        return settings.getString("UserName","Unknown");
+    }
+    public static int UserId(Activity context)
+    {
+        SharedPreferences settings = context.getSharedPreferences(PREFS,0);
+        return settings.getInt("UserId",0);
+    }
     public static void Login(Activity context,int userId,String username,String password)
     {
         SharedPreferences settings = context.getSharedPreferences(PREFS,0);

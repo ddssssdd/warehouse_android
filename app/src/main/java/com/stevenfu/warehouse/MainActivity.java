@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -18,12 +20,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.stevenfu.warehouse.adpaters.IItemsAdapter;
+import com.stevenfu.warehouse.adpaters.ItemsAdapter;
+import com.stevenfu.warehouse.models.Stores;
+import com.stevenfu.warehouse.models.WItems;
+import com.stevenfu.warehouse.network.CustomRequest;
+import com.stevenfu.warehouse.network.WhRequest;
 import com.stevenfu.warehouse.settings.App;
+import com.stevenfu.warehouse.settings.Url;
 import com.stevenfu.warehouse.users.LoginActivity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,13 +81,11 @@ public class MainActivity extends AppCompatActivity
     }
     private void HandleLogin()
     {
-        if (App.IsLogin(this))
+        if (App.IsLogin(this))//load data then if logged
         {
-            TextView txtMain= (TextView)findViewById(R.id.txtMain);
-            txtMain.setText("main");
-
+            initData();
         }
-        else
+        else//popup login if not login.
         {
             Intent intent = new Intent();
             intent.setClass(MainActivity.this, LoginActivity.class);
@@ -75,6 +95,109 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+    private WhRequest<Stores> request;
+    private void initData(){
+        TextView txtMain = (TextView)findViewById(R.id.txtMain);
+        txtMain.setText(String.format("Welcome %s",App.Username(this)));
+        /*
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        request = new WhRequest<Stores>(this,Url.STORES,null,new IItemsAdapter(){
+
+            @Override
+            public View getView(LayoutInflater inflater, int i, View convertView, ViewGroup parent) {
+                View view;
+                if (convertView == null){
+                    view = inflater.inflate(R.layout.store_item,parent,false);
+                }else{
+                    view = convertView;
+                }
+
+                TextView textName = (TextView)view.findViewById(R.id.txtName);
+                final Stores store = storeList.get(i);
+                textName.setText(store.Name);
+                TextView textPhone = (TextView)view.findViewById(R.id.txtPhone);
+                textPhone.setText(store.Phone);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SelectStore(store);
+                    }
+                });
+
+                return view;
+            }
+        },Stores.class);
+        request.BindListView = (ListView)findViewById(R.id.listStore);
+        queue.add(request);
+        */
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = Url.SERVER_URL + Url.STORES;
+        WhRequest request = new WhRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                HandleStoreData(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HandleError(error);
+            }
+        });
+        queue.add(request);
+
+    }
+    private ArrayList<Stores> storeList;
+    private void HandleStoreData(JSONObject response)    {
+
+        WItems<Stores> items = new WItems<>(response,Stores.class);
+        if (items.status){
+            storeList = items.Items;
+            ItemsAdapter adapter = new ItemsAdapter(this,items,new IItemsAdapter(){
+                @Override
+                public  View getView(LayoutInflater inflater,int i, View convertView, ViewGroup parent)
+                {
+                    View view;
+                    if (convertView == null){
+                        view = inflater.inflate(R.layout.store_item,parent,false);
+                    }else{
+                        view = convertView;
+                    }
+
+                    TextView textName = (TextView)view.findViewById(R.id.txtName);
+                    final Stores store = storeList.get(i);
+                    textName.setText(store.Name);
+                    TextView textPhone = (TextView)view.findViewById(R.id.txtPhone);
+                    textPhone.setText(store.Phone);
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SelectStore(store);
+                        }
+                    });
+
+                    return view;
+                }
+            });
+            ListView listStore = (ListView)findViewById(R.id.listStore);
+            listStore.setAdapter(adapter);
+        }
+    }
+    private void SelectStore(Stores store)
+    {
+        Intent intent = new Intent(MainActivity.this, StoreProductsActivity.class);
+        intent.putExtra("store_id",store.Id);
+        startActivity(intent);
+
+    }
+
+
+    private void HandleError(VolleyError err)
+    {
+
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (requestCode==CODE_LOGIN) { //for login
