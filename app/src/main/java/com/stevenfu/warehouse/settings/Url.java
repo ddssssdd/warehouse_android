@@ -14,4 +14,7 @@ public class Url {
     public static String STOCKS_OUT = "stocks/ItemsOut";
     public static String STOCKS_PRODUCTS ="stocks/products?store_id=%d";
 
+    public static String PRODUCTS = "product/items";
+    public static String PRODUCT_FIND = "product/Find?id=%d";
+
 }

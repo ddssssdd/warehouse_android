@@ -58,6 +58,8 @@ public class StoreProductsActivity extends AppCompatActivity {
             });
             queue.add(request);
         }
+        String storeName = intent.getStringExtra("store_name");
+        this.setTitle(String.format("库存明细 - %s",storeName));
 
     }
     private void HandleStoreData(JSONObject response)    {
@@ -80,15 +82,20 @@ public class StoreProductsActivity extends AppCompatActivity {
                     final Inventory inventory = items.Items.get(i);
                     textName.setText(inventory.Name);
                     TextView textPhone = (TextView)view.findViewById(R.id.txtQuantity);
-                    textPhone.setText(String.format("%f",inventory.Quantity));
+                    textPhone.setText(String.format("%1.2f",inventory.Quantity));
                     TextView txt1 = (TextView)view.findViewById(R.id.txtMinPrice);
-                    txt1.setText(String.format("%f",inventory.MinPrice));
+                    txt1.setText(String.format("¥%1.2f",inventory.MinPrice));
                     TextView txt2 = (TextView)view.findViewById(R.id.txtMaxPrice);
-                    txt2.setText(String.format("%f",inventory.MaxPrice));
+                    txt2.setText(String.format("¥%1.2f",inventory.MaxPrice));
                     TextView txt3 = (TextView)view.findViewById(R.id.txtMinOutPrice);
-                    txt3.setText(String.format("%f",inventory.MinOutPrice));
+                    txt3.setText(String.format("¥%1.2f",inventory.MinOutPrice));
                     TextView txt4 = (TextView)view.findViewById(R.id.txtMaxOutPrice);
-                    txt4.setText(String.format("%f",inventory.MaxOutPrice));
+                    txt4.setText(String.format("¥%1.2f",inventory.MaxOutPrice));
+                    if (inventory.Specification!=null){
+                        TextView txtSpecification = (TextView)view.findViewById(R.id.txtSpecification);
+                        txtSpecification.setText(inventory.Specification);
+                    }
+
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

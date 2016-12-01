@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(MainActivity.this, StoreProductsActivity.class);
         intent.putExtra("store_id",store.Id);
+        intent.putExtra("store_name",store.Name);
         startActivity(intent);
 
     }
@@ -258,6 +259,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_out) {
 
         } else if (id == R.id.nav_product) {
+            Intent intent = new Intent(MainActivity.this, ProductActivity.class);
+            intent.putExtra("product_id",0);
+            startActivity(intent);
 
         } else if (id == R.id.nav_client) {
 
