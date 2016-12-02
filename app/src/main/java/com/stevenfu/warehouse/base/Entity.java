@@ -26,13 +26,13 @@ public class Entity {
                     Object value=null;
                     Log.d("Type",field.getType().getName());
                     if (field.getType().getName().equalsIgnoreCase("int")){
-                        value = obj.getInt(name);
+                        value = obj.optInt(name);
                     }else if (field.getType().getName().toLowerCase().contains("string")){
-                        value = obj.getString(name);
+                        value = obj.optString(name);
                     }else if (field.getType().getName().toLowerCase().contains("boolean")){
-                        value = obj.getBoolean(name);
+                        value = obj.optBoolean(name);
                     }else if (field.getType().getName().toLowerCase().contains("double")){
-                        value = obj.getDouble(name);
+                        value = obj.optDouble(name);
                     }else{
                         value = obj.opt(name);
                     }
