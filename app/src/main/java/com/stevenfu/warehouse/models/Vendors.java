@@ -2,13 +2,12 @@ package com.stevenfu.warehouse.models;
 
 import com.stevenfu.warehouse.base.Entity;
 
-import org.json.JSONObject;
-
 /**
- * Created by Steven Fu on 12/01/2016.
+ * Created by Steven Fu on 12/02/2016.
  */
-public class Clients extends Entity {
-    public Clients() {
+
+public class Vendors extends Entity{
+    public Vendors() {
 
     }
 

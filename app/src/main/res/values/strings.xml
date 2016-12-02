@@ -20,4 +20,5 @@
         completions."
     </string>
     <string name="title_activity_product">Product - Management</string>
+    <string name="title_activity_client">ClientActivity</string>
 </resources>

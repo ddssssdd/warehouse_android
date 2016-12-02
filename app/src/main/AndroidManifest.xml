@@ -33,7 +33,18 @@
             android:name=".ProductActivity"
             android:label="@string/title_activity_product"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ProductEditActivity"></activity>
+        <activity android:name=".ProductEditActivity" />
+        <activity
+            android:name=".ClientActivity"
+            android:label="@string/title_activity_client"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".VendorActivity"
+            android:label="@string/title_activity_client"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ClientEditActivity"></activity>
+        <activity android:name=".VendorEditActivity"></activity>
+
     </application>
 
 </manifest>

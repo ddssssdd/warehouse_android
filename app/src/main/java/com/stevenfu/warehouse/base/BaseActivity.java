@@ -31,12 +31,24 @@ import java.util.Map;
  */
 
 public class BaseActivity extends AppCompatActivity {
+    protected boolean JsonResultStatus = false;
+    protected String JsonResultMessage = "";
+    protected JSONObject JsonResult;
     protected void ShowProgress(boolean mShow)
     {
 
     }
     protected void HandleError(VolleyError err)
     {
+
+    }
+    protected void HandleJsonResult(JSONObject response)
+    {
+        JsonResult = response;
+        JsonResultStatus = response.optBoolean("status");
+        if (!JsonResultStatus){
+            JsonResultMessage = response.optString("message");
+        }
 
     }
 }

@@ -20,7 +20,8 @@ import com.android.volley.toolbox.Volley;
 import com.stevenfu.warehouse.adpaters.IItemsAdapter;
 import com.stevenfu.warehouse.adpaters.ItemsAdapter;
 import com.stevenfu.warehouse.base.BaseActivity;
-import com.stevenfu.warehouse.models.Inventory;
+import com.stevenfu.warehouse.base.Entity;
+import com.stevenfu.warehouse.models.Clients;
 import com.stevenfu.warehouse.models.Products;
 import com.stevenfu.warehouse.models.WItems;
 import com.stevenfu.warehouse.network.WhRequest;
@@ -30,12 +31,12 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
-public class ProductActivity extends BaseActivity {
+public class ClientActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product);
+        setContentView(R.layout.activity_client);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,24 +44,45 @@ public class ProductActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doEditProduct(0);
+                 doEditItem(0);
             }
         });
+        Init_activity();
         InitData();
     }
-    private void doEditProduct(int product_id){
-        Intent intent = new Intent(ProductActivity.this,ProductEditActivity.class);
-        intent.putExtra("product_id",product_id);
-        startActivityForResult(intent,CODE_PRODUCT);
+    protected void Init_activity()
+    {
+        editActivityClass = ClientEditActivity.class;
+        mEditUrl = Url.CLIENT_EDIT;
+        mAddurl = Url.CLIENT_ADD;
+        mGetUrl = Url.CLIENTS;
+        mFindUrl = Url.CLIENT_FIND;
+        this.setTitle(String.format("客户"));
     }
-    private static int CODE_PRODUCT = 1;
+    private int item_id;
+    protected Class editActivityClass;
+    protected String mEditUrl;
+    protected String mAddurl;
+    protected String mGetUrl;
+    protected String mFindUrl;
+
+    private void doEditItem(int id){
+        item_id = id;
+        Intent intent = new Intent(this,editActivityClass);
+        intent.putExtra("id",id);
+        intent.putExtra("EditUrl",mEditUrl);
+        intent.putExtra("AddUrl",mAddurl);
+        intent.putExtra("FindUrl",mFindUrl);
+        startActivityForResult(intent, CODE_CURRENT_ITEM);
+    }
+    private static int CODE_CURRENT_ITEM = 1;
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode==CODE_PRODUCT) { //for login
+        if (requestCode== CODE_CURRENT_ITEM) {
             if (resultCode>0){
-                String message = "新建产品成功";
+                String message = "新建成功";
                 if (resultCode==2){
-                    message = "修改产品成功";
+                    message = "修改成功";
                 }
                 Snackbar.make(this.getCurrentFocus(), message, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -71,7 +93,7 @@ public class ProductActivity extends BaseActivity {
     }
     private void InitData()
     {
-        LoadData(Url.SERVER_URL+Url.PRODUCTS,null);
+        LoadData(Url.SERVER_URL+mGetUrl,null);
     }
     protected void LoadData(String url,Map parameters){
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -89,9 +111,11 @@ public class ProductActivity extends BaseActivity {
         queue.add(request);
 
     }
+
+
     protected void HandleResponseData(JSONObject response)    {
 
-        final WItems<Products> items = new WItems<>(response,Products.class);
+        final WItems<Clients> items = new WItems<>(response,Clients.class);
         if (items.status){
 
             ItemsAdapter adapter = new ItemsAdapter(this,items,new IItemsAdapter(){
@@ -100,27 +124,27 @@ public class ProductActivity extends BaseActivity {
                 {
                     View view;
                     if (convertView == null){
-                        view = inflater.inflate(R.layout.product_item,parent,false);
+                        view = inflater.inflate(R.layout.client_item,parent,false);
                     }else{
                         view = convertView;
                     }
 
                     TextView textName = (TextView)view.findViewById(R.id.txtName);
-                    final Products product = items.Items.get(i);
-                    textName.setText(product.Name);
-                    TextView textPhone = (TextView)view.findViewById(R.id.txtPrice);
-                    textPhone.setText(String.format("%1.2f",product.Price));
-                    TextView txt1 = (TextView)view.findViewById(R.id.txtUnit);
-                    txt1.setText(product.Unit);
-                    if (product.Specification!=null){
-                        TextView txtSpecification = (TextView)view.findViewById(R.id.txtSpecification);
-                        txtSpecification.setText(product.Specification);
-                    }
+                    final Clients client = items.Items.get(i);
+                    textName.setText(client.Name);
+                    TextView textPhone = (TextView)view.findViewById(R.id.txtPhone);
+                    textPhone.setText(client.Phone);
+                    TextView txt1 = (TextView)view.findViewById(R.id.txtAddress);
+                    txt1.setText(client.Address);
+
+                    TextView txtSpecification = (TextView)view.findViewById(R.id.txtContact);
+                    txtSpecification.setText(client.ContactName);
+
 
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            SelectItem(product);
+                            SelectItem(client.Id);
                         }
                     });
 
@@ -131,9 +155,9 @@ public class ProductActivity extends BaseActivity {
             listStore.setAdapter(adapter);
         }
     }
-    protected void SelectItem(Products product)
+    protected void SelectItem(int clientId)
     {
-        doEditProduct(product.Id);
+        doEditItem(clientId);
     }
 
 }
