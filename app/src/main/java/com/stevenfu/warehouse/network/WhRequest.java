@@ -1,6 +1,7 @@
 package com.stevenfu.warehouse.network;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.android.volley.NetworkResponse;
@@ -64,6 +65,7 @@ public class WhRequest<T extends Entity> extends Request<JSONObject>{
         super(method, url, errorListener);
         this.listener = reponseListener;
         this.params = params;
+        Log.d("Http",url);
     }
 
     protected Map<String, String> getParams()

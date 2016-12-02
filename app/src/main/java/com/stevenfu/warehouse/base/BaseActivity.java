@@ -1,7 +1,18 @@
 package com.stevenfu.warehouse.base;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,16 +42,20 @@ import java.util.Map;
  */
 
 public class BaseActivity extends AppCompatActivity {
+
+    private View mProgressView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
     protected boolean JsonResultStatus = false;
     protected String JsonResultMessage = "";
     protected JSONObject JsonResult;
-    protected void ShowProgress(boolean mShow)
-    {
 
-    }
     protected void HandleError(VolleyError err)
     {
-
+        showProgress(false);
     }
     protected void HandleJsonResult(JSONObject response)
     {
@@ -50,5 +65,34 @@ public class BaseActivity extends AppCompatActivity {
             JsonResultMessage = response.optString("message");
         }
 
+    }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    protected void showProgress(final boolean show) {
+        mProgressView = findViewById(R.id.wh_progress);
+        if (mProgressView==null){
+            return;
+        }
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+
+        }
     }
 }

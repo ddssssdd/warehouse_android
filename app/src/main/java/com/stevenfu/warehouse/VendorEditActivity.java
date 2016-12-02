@@ -14,6 +14,7 @@ public class VendorEditActivity extends ClientEditActivity {
     @Override
     protected void HandleResponseData(JSONObject response)
     {
+        showProgress(false);
         mVendor = new Vendors();
         if (response.optBoolean("status")){
             mVendor.InitDataWithJson(response.optJSONObject("result"));

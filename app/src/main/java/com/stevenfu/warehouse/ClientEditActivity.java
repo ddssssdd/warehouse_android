@@ -74,6 +74,7 @@ public class ClientEditActivity extends BaseActivity {
         LoadData(String.format(Url.SERVER_URL+mFindUrl,item_id),null);
     }
     protected void LoadData(String url,Map parameters){
+        showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
         WhRequest request = new WhRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
             @Override
@@ -92,6 +93,7 @@ public class ClientEditActivity extends BaseActivity {
 
     protected void HandleResponseData(JSONObject response)
     {
+        showProgress(false);
         mClient = new Clients();
         if (response.optBoolean("status")){
             mClient.InitDataWithJson(response.optJSONObject("result"));
@@ -125,6 +127,7 @@ public class ClientEditActivity extends BaseActivity {
         }else{
             url = url + mAddurl;
         }
+        showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
         WhRequest request = new WhRequest(Request.Method.POST, url, map, new Response.Listener<JSONObject>() {
             @Override
@@ -141,6 +144,7 @@ public class ClientEditActivity extends BaseActivity {
     }
     private void HandleUpdateResult(JSONObject response)
     {
+        showProgress(false);
         HandleJsonResult(response);
         if (JsonResultStatus){
             int returnCode=1;

@@ -24,7 +24,7 @@ public class Entity {
                 try
                 {
                     Object value=null;
-                    Log.d("Type",field.getType().getName());
+                    //Log.d("Type",field.getType().getName());
                     if (field.getType().getName().equalsIgnoreCase("int")){
                         value = obj.optInt(name);
                     }else if (field.getType().getName().toLowerCase().contains("string")){

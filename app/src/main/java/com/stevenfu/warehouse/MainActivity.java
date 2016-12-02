@@ -1,8 +1,13 @@
 package com.stevenfu.warehouse;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +26,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -33,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.stevenfu.warehouse.adpaters.IItemsAdapter;
 import com.stevenfu.warehouse.adpaters.ItemsAdapter;
+import com.stevenfu.warehouse.base.BaseActivity;
 import com.stevenfu.warehouse.models.Stores;
 import com.stevenfu.warehouse.models.WItems;
 import com.stevenfu.warehouse.network.CustomRequest;
@@ -47,10 +54,11 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static int CODE_LOGIN = 0;
     private  NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +83,12 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         HandleLogin();
 
 
     }
+
     private void HandleLogin()
     {
         if (App.IsLogin(this))//load data then if logged
@@ -131,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         request.BindListView = (ListView)findViewById(R.id.listStore);
         queue.add(request);
         */
-
+        showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Url.SERVER_URL + Url.STORES;
         WhRequest request = new WhRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
@@ -150,7 +160,7 @@ public class MainActivity extends AppCompatActivity
     }
     private ArrayList<Stores> storeList;
     private void HandleStoreData(JSONObject response)    {
-
+        showProgress(false);
         WItems<Stores> items = new WItems<>(response,Stores.class);
         if (items.status){
             storeList = items.Items;
@@ -176,7 +186,6 @@ public class MainActivity extends AppCompatActivity
                             SelectStore(store);
                         }
                     });
-
                     return view;
                 }
             });
@@ -184,6 +193,7 @@ public class MainActivity extends AppCompatActivity
             listStore.setAdapter(adapter);
         }
     }
+
     private void SelectStore(Stores store)
     {
         Intent intent = new Intent(MainActivity.this, StoreProductsActivity.class);
@@ -194,10 +204,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void HandleError(VolleyError err)
-    {
 
-    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {

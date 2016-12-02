@@ -34,7 +34,7 @@ public class VendorActivity extends ClientActivity {
     }
     @Override
     protected void HandleResponseData(JSONObject response)    {
-
+        showProgress(false);
         final WItems<Vendors> items = new WItems<>(response,Vendors.class);
         if (items.status){
 

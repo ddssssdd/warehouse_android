@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.stevenfu.warehouse.adpaters.IItemsAdapter;
 import com.stevenfu.warehouse.adpaters.ItemsAdapter;
+import com.stevenfu.warehouse.base.BaseActivity;
 import com.stevenfu.warehouse.models.Inventory;
 import com.stevenfu.warehouse.models.Stores;
 import com.stevenfu.warehouse.models.WItems;
@@ -27,7 +28,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StoreProductsActivity extends AppCompatActivity {
+public class StoreProductsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +37,12 @@ public class StoreProductsActivity extends AppCompatActivity {
 
         InitData();
     }
+    private int store_id;
     private void InitData(){
         Intent intent = getIntent();
-        int store_id = intent.getIntExtra("store_id",0);
+        store_id = intent.getIntExtra("store_id",0);
         if (store_id>0){
+            showProgress(true);
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = String.format(Url.SERVER_URL + Url.STOCKS_PRODUCTS,store_id);
             Map map = new HashMap();
@@ -63,7 +66,7 @@ public class StoreProductsActivity extends AppCompatActivity {
 
     }
     private void HandleStoreData(JSONObject response)    {
-
+        showProgress(false);
         final WItems<Inventory> items = new WItems<>(response,Inventory.class);
         if (items.status){
 
@@ -112,12 +115,11 @@ public class StoreProductsActivity extends AppCompatActivity {
     }
     private void SelectStore(Inventory store)
     {
-
+        Intent intent = new Intent(this, StocksDetailActivity.class);
+        intent.putExtra("store_id",store_id);
+        intent.putExtra("product_id",store.ProductId);
+        intent.putExtra("inventory_id",store.Id);
+        startActivity(intent);
     }
 
-
-    private void HandleError(VolleyError err)
-    {
-
-    }
 }

@@ -70,6 +70,7 @@ public class ProductEditActivity extends BaseActivity {
         LoadData(String.format(Url.SERVER_URL+Url.PRODUCT_FIND,product_id),null);
     }
     protected void LoadData(String url,Map parameters){
+        showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
         WhRequest request = new WhRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
             @Override
@@ -88,6 +89,7 @@ public class ProductEditActivity extends BaseActivity {
 
     protected void HandleResponseData(JSONObject response)
     {
+        showProgress(false);
         mProduct = new Products();
         if (response.optBoolean("status")){
             mProduct.InitDataWithJson(response.optJSONObject("result"));
@@ -122,6 +124,7 @@ public class ProductEditActivity extends BaseActivity {
         }else{
             url = url + Url.PRODUCT_ADD;
         }
+        showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
         WhRequest request = new WhRequest(Request.Method.POST, url, map, new Response.Listener<JSONObject>() {
             @Override
@@ -138,6 +141,7 @@ public class ProductEditActivity extends BaseActivity {
     }
     private void HandleUpdateResult(JSONObject response)
     {
+        showProgress(false);
         HandleJsonResult(response);
         if (JsonResultStatus){
             int returnCode=1;

@@ -96,6 +96,7 @@ public class ClientActivity extends BaseActivity {
         LoadData(Url.SERVER_URL+mGetUrl,null);
     }
     protected void LoadData(String url,Map parameters){
+        showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
         WhRequest request = new WhRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
             @Override
@@ -114,7 +115,7 @@ public class ClientActivity extends BaseActivity {
 
 
     protected void HandleResponseData(JSONObject response)    {
-
+        showProgress(false);
         final WItems<Clients> items = new WItems<>(response,Clients.class);
         if (items.status){
 
