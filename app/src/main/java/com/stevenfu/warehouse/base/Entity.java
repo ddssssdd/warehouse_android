@@ -49,4 +49,16 @@ public class Entity {
 
         }
     }
+    public String Description()
+    {
+        try{
+            Field field = getClass().getField("Name");
+            String result = field.get(this).toString();
+            return result;
+
+        }catch (Exception ex){
+            Log.d("Exception",ex.toString());
+        }
+        return this.toString();
+    }
 }

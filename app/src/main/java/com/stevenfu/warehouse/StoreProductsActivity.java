@@ -34,7 +34,7 @@ public class StoreProductsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store_products);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         InitData();
     }
     private int store_id;

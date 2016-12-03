@@ -10,8 +10,8 @@ public class Url {
     public static String USER_LOGIN = "user/login";
 
     public static String STORES = "store/Items";
-    public static String STOCKS_IN = "stocks/ItemsIn";
-    public static String STOCKS_OUT = "stocks/ItemsOut";
+    public static String STOCKS_IN = "stocks/save_in";
+    public static String STOCKS_OUT = "stocks/save_out";
     public static String STOCKS_PRODUCTS ="stocks/products?store_id=%d";
     public static String STOCKS_DETAIL_WITH_STOREID_PRODUCTID_INVENTORYID ="stocks/details?store_id=%d&product_id=%d&inventory_id=%d";
 
@@ -29,6 +29,8 @@ public class Url {
     public static String VENDOR_FIND = "vendor/Find?id=%d";
     public static String VENDOR_ADD = "vendor/Add";
     public static String VENDOR_EDIT = "vendor/Edit";
+
+
 
 
 

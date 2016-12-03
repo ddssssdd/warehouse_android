@@ -49,4 +49,13 @@ public class WItems<T extends Entity> {
 
         }
     }
+    public ArrayList<String> DescriptionList()
+    {
+        ArrayList<String> result = new ArrayList<>(Items.size());
+        for(int i=0;i<Items.size();i++){
+            T entity = Items.get(i);
+            result.add(entity.Description());
+        }
+        return result;
+    }
 }

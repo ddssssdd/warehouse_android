@@ -209,8 +209,11 @@ public class MainActivity extends BaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (requestCode==CODE_LOGIN) { //for login
-            Snackbar.make(this.getCurrentFocus(), "You have logged in.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            if (navigationView!=null){
+                Snackbar.make(navigationView, "登录成功！欢迎会来", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+
         }
     }
 
@@ -259,9 +262,10 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            App.Logout(this);
-            HandleLogin();
+
         } else if (id == R.id.nav_in) {
+            Intent intent = new Intent(MainActivity.this, StocksInActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_out) {
 
@@ -277,6 +281,11 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_vendor) {
             Intent intent = new Intent(MainActivity.this, VendorActivity.class);
             startActivity(intent);
+        }else if (id == R.id.nav_logout){
+
+        }else if (id == R.id.nav_system){
+            App.Logout(this);
+            HandleLogin();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

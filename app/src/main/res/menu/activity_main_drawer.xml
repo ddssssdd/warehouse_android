@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Camera" />
+            android:title="拍照上传" />
         <item
             android:id="@+id/nav_in"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="In" />
+            android:title="入库" />
         <item
             android:id="@+id/nav_out"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Out" />
+            android:title="出库" />
         <item
             android:id="@+id/nav_product"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Product" />
+            android:title="销售商品管理" />
     </group>
 
     <item android:title="System">
@@ -25,11 +25,19 @@
             <item
                 android:id="@+id/nav_client"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Client" />
+                android:title="客户管理" />
             <item
                 android:id="@+id/nav_vendor"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Vendor" />
+                android:title="供应商管理" />
+            <item
+                android:id="@+id/nav_system"
+                android:icon="@drawable/ic_menu_send"
+                android:title="设置" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_send"
+                android:title="注销" />
         </menu>
     </item>
 

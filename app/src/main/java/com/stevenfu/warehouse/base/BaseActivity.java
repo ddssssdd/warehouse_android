@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.Inflater;
 
 /**
  * Created by stevenfu on 01/12/2016.
@@ -49,6 +51,18 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if (item.getItemId()==android.R.id.home){
+            onBack();
+        }
+        return true;
+    }
+    protected void onBack()
+    {
+        finish();
+    }
     protected boolean JsonResultStatus = false;
     protected String JsonResultMessage = "";
     protected JSONObject JsonResult;
@@ -56,6 +70,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void HandleError(VolleyError err)
     {
         showProgress(false);
+        showMessage(err.toString());
     }
     protected void HandleJsonResult(JSONObject response)
     {
@@ -66,9 +81,21 @@ public class BaseActivity extends AppCompatActivity {
         }
 
     }
+    protected  void showMessage(String message)
+    {
+        View focusView = this.getCurrentFocus();
+        if (focusView!=null){
+            Snackbar.make(focusView, message, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+
+    }
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     protected void showProgress(final boolean show) {
-        mProgressView = findViewById(R.id.wh_progress);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.progress,null);
+
+        mProgressView = view.findViewById(R.id.wh_progress);
         if (mProgressView==null){
             return;
         }

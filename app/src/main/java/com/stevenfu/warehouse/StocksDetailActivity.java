@@ -34,6 +34,7 @@ public class StocksDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stocks_detail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         InitData();
         this.setTitle("库存变化明细");
     }

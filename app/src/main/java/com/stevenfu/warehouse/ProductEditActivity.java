@@ -41,6 +41,7 @@ public class ProductEditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_edit);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         InitData();
     }
     private void InitData()
