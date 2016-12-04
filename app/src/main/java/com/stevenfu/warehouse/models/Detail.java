@@ -24,6 +24,7 @@ public class Detail extends Entity
     public int ProductId;
     public Stores Store;
     public int StoreId;
+
     public String Direction()
     {
         if (Method.equalsIgnoreCase("in")){

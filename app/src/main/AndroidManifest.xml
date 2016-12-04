@@ -48,6 +48,10 @@
         <activity
             android:name=".StocksInActivity"
             android:label="@string/title_activity_stocks_in"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".StocksOutActivity"
+            android:label="@string/title_activity_stocks_out"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

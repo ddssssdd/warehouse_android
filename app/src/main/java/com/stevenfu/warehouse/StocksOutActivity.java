@@ -4,8 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +26,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.stevenfu.warehouse.base.BaseActivity;
 import com.stevenfu.warehouse.fragments.StocksInFragment;
+import com.stevenfu.warehouse.fragments.StocksOutFragment;
 import com.stevenfu.warehouse.models.Clients;
 import com.stevenfu.warehouse.models.Detail;
 import com.stevenfu.warehouse.models.Products;
 import com.stevenfu.warehouse.models.Stores;
-import com.stevenfu.warehouse.models.Vendors;
 import com.stevenfu.warehouse.models.WItems;
 import com.stevenfu.warehouse.network.WhRequest;
 import com.stevenfu.warehouse.settings.Url;
@@ -46,15 +43,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StocksInActivity extends BaseActivity implements StocksInFragment.OnFragmentInteractionListener {
+public class StocksOutActivity extends BaseActivity implements StocksOutFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stocks_in);
+        setContentView(R.layout.activity_stocks_out);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,28 +60,26 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
                 doSave();
             }
         });
-
         InitData();
     }
 
     private EditText edtMemo;
     private EditText edtInvoiceNo;
-    private Spinner spVendor;
+    private Spinner spClient;
     private EditText edtEnteredDate;
-    private Spinner spStore;
+
     private EditText edtTotalPrice;
     private EditText edtTotalNo;
     private ListView listDetails;
     private Button btnAddDetail;
     private ArrayList<Detail> details;
-    private DetailAdapter detailAdapter;
+    private StocksOutActivity.DetailAdapter detailAdapter;
 
-    WItems<Products> products;
-    WItems<Vendors> vendors;
+
+    WItems<Clients> clients;
     WItems<Stores> stores;
+    private Clients currentClient;
 
-    private Vendors currentVendor;
-    private Stores currentStore;
 
     private void InitData()
     {
@@ -92,9 +88,9 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         listDetails =(ListView)findViewById(R.id.listDetails);
         edtMemo = (EditText)findViewById(R.id.edtMemo);
         edtInvoiceNo = (EditText)findViewById(R.id.edtInvoiceNo);
-        spVendor =(Spinner)findViewById(R.id.spVendor);
+        spClient =(Spinner)findViewById(R.id.spClient);
         edtEnteredDate = (EditText)findViewById(R.id.edtEnteredDate);
-        spStore = (Spinner)findViewById(R.id.spStore);
+
         edtTotalPrice =(EditText)findViewById(R.id.edtTotalPrice);
         edtTotalNo = (EditText)findViewById(R.id.edtTotalNo);
 
@@ -104,16 +100,16 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
 
         edtEnteredDate.setText(format.format(new Date()));
         //bind adapter to details;
-        detailAdapter = new DetailAdapter(this);
+        detailAdapter = new StocksOutActivity.DetailAdapter(this);
         listDetails.setAdapter(detailAdapter);
         //Init Vendor
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Url.SERVER_URL + Url.VENDORS;
+        String url = Url.SERVER_URL + Url.CLIENTS;
         WhRequest request = new WhRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                HandleVendorResponseData(response);
+                HandleClientResponseData(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -129,23 +125,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         WhRequest request_store = new WhRequest(Request.Method.POST, url_store, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                HandleStoreResponseData(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                HandleError(error);
-            }
-        });
-        queue.add(request_store);
-
-        //init products;
-
-        String url_product = Url.SERVER_URL + Url.PRODUCTS;
-        WhRequest request_product = new WhRequest(Request.Method.POST, url_product, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                products = new WItems<>(response,Products.class);
+                stores = new WItems<>(response,Stores.class);
                 enableUserActions();
             }
         }, new Response.ErrorListener() {
@@ -154,7 +134,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
                 HandleError(error);
             }
         });
-        queue.add(request_product);
+        queue.add(request_store);
 
         btnAddDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,24 +145,24 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
 
     }
 
-    private void HandleVendorResponseData(JSONObject res)
+    private void HandleClientResponseData(JSONObject res)
     {
 
-        vendors = new WItems<>(res,Vendors.class);
-        if (vendors.status){
-            ArrayList<String> arrayItems = vendors.DescriptionList();
+        clients = new WItems<>(res,Clients.class);
+        if (clients.status){
+            ArrayList<String> arrayItems = clients.DescriptionList();
             final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,arrayItems);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spVendor.setAdapter(adapter);
-            spVendor.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+            spClient.setAdapter(adapter);
+            spClient.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    selectVendor(i);
+                    selectClient(i);
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
-                    selectVendor(-1);
+                    selectClient(-1);
                 }
             });
 
@@ -190,54 +170,24 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         }
         enableUserActions();
     }
-    private void selectVendor(int index){
+
+    private void selectClient(int index){
         if (index>-1){
-            currentVendor = vendors.Items.get(index);
+            currentClient = clients.Items.get(index);
 
         }
     }
-    private void HandleStoreResponseData(JSONObject res){
 
-        stores = new WItems<>(res,Stores.class);
-        if (stores.status){
-            ArrayList<String> arrayItems = stores.DescriptionList();
-            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,arrayItems);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spStore.setAdapter(adapter);
-            spStore.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    selectStore(i);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                    selectStore(-1);
-                }
-            });
-
-
-        }
-        enableUserActions();
-    }
     private void enableUserActions()
     {
         showProgress(false);
-        boolean canWork = products!=null && stores!=null && vendors!=null && vendors.status && products.status && stores.status;
+        boolean canWork = clients !=null && clients.status;
         btnAddDetail.setEnabled(canWork);
     }
-    private void selectStore(int index){
-        if (index>-1){
-            currentStore = stores.Items.get(index);
 
-        }
-        int i = spStore.getSelectedItemPosition();
-        Log.d("Select",String.format("Index=%d",i));
-    }
     private void AddNewDetail()
     {
-        int store_index = spStore.getSelectedItemPosition();
-        StocksInFragment fragment = StocksInFragment.newInstance(store_index);
+        StocksOutFragment fragment = StocksOutFragment.newInstance(0);
         fragment.show(getSupportFragmentManager(),"Title");
     }
     private  void SelectDetail(Detail detail){//detail list view select item;
@@ -257,13 +207,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         return stores;
     }
     @Override
-    public WItems<Products> getProducts()
-    {
-        return products;
-    }
-
-    @Override
-    public void AddDetail(Products product, String specification, double price, double quantity, Stores store, String memo)
+    public void AddDetail(Products product,  double price, double quantity, Stores store, String memo)
     {
         if (product!=null && store!=null && price!=0.0f && quantity!=0.0f){
             Detail detail = new Detail();
@@ -273,7 +217,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
             detail.Store = store;
             detail.StoreId = store.Id;
             detail.Quantity = quantity;
-            detail.Specification = specification;
+
             detail.Memo = memo;
             details.add(detail);
         }
@@ -291,7 +235,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         edtTotalPrice.setText(String.format("%1.2f",sum));
         this.detailAdapter.notifyDataSetChanged();
     }
-    public class DetailAdapter extends BaseAdapter{
+    public class DetailAdapter extends BaseAdapter {
         LayoutInflater inflater;
         public DetailAdapter(Context contex){
             inflater = LayoutInflater.from(contex);
@@ -315,7 +259,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         public View getView(int i, View convertView, ViewGroup parent) {
             View view;
             if (convertView == null){
-                view = inflater.inflate(R.layout.stocks_in_item,parent,false);
+                view = inflater.inflate(R.layout.stocks_out_item,parent,false);
             }else{
                 view = convertView;
             }
@@ -325,7 +269,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
             detail.UpdateSequ = i;
             textName.setText(detail.Product.Name);
             ((TextView)view.findViewById(R.id.txtMemo)).setText(detail.Memo);
-            ((TextView)view.findViewById(R.id.txtSpecification)).setText(detail.Specification);
+            ((TextView)view.findViewById(R.id.txtStore)).setText(detail.Store.Name);
             ((TextView)view.findViewById(R.id.txtPrice)).setText(String.format("%1.2f",detail.Price));
             ((TextView)view.findViewById(R.id.txtQuantity)).setText(String.format("%1.2f",detail.Quantity));
             ((TextView)view.findViewById(R.id.txtTotal)).setText(String.format("%1.2f",detail.Price*detail.Quantity));
@@ -350,8 +294,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
     private void doSave(){
         Map map = new HashMap();
         map.put("Id",String.format("%d",1));
-        map.put("VendorId",String.format("%d",currentVendor.Id));
-        map.put("StoreId",String.format("%d",currentStore.Id));
+        map.put("ClientId",String.format("%d", currentClient.Id));
         map.put("TotalPrice", edtTotalPrice.getText().toString());
         map.put("TotalNo",edtTotalNo.getText().toString());
         map.put("InvoiceNo",edtInvoiceNo.getText().toString());
@@ -367,11 +310,11 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
             map.put(String.format("details[%d][Price]",i),String.format("%1.2f",d.Price));
             map.put(String.format("details[%d][Quantity]",i),String.format("%1.2f",d.Quantity));
             map.put(String.format("details[%d][Memo]",i), d.Memo);
-            map.put(String.format("details[%d][Specification]",i), d.Specification);
+
 
         }
 
-        String url = Url.SERVER_URL+ Url.STOCKS_IN;
+        String url = Url.SERVER_URL+ Url.STOCKS_OUT;
 
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);

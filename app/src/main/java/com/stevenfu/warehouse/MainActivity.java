@@ -57,6 +57,8 @@ import java.util.ArrayList;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static int CODE_LOGIN = 0;
+    private static int CODE_IN = 1;
+    private static int CODE_OUT = 2;
     private  NavigationView navigationView;
 
     @Override
@@ -214,6 +216,14 @@ public class MainActivity extends BaseActivity
                         .setAction("Action", null).show();
             }
 
+        }else if (requestCode == CODE_IN){
+            if (resultCode==1){// save success
+                showMessage("入库单存储成功！");
+            }
+        }else if (requestCode == CODE_OUT){
+            if (resultCode==1){// save success
+                showMessage("出库单存储成功！");
+            }
         }
     }
 
@@ -265,9 +275,11 @@ public class MainActivity extends BaseActivity
 
         } else if (id == R.id.nav_in) {
             Intent intent = new Intent(MainActivity.this, StocksInActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,CODE_IN);
 
         } else if (id == R.id.nav_out) {
+            Intent intent = new Intent(MainActivity.this, StocksOutActivity.class);
+            startActivityForResult(intent,CODE_OUT);
 
         } else if (id == R.id.nav_product) {
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
