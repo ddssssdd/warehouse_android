@@ -72,8 +72,14 @@ public class MainActivity extends BaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                stocksin();
+            }
+        });
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stocksout();
             }
         });
 
@@ -264,6 +270,14 @@ public class MainActivity extends BaseActivity
 
         return super.onOptionsItemSelected(item);
     }
+    private void stocksin(){
+        Intent intent = new Intent(MainActivity.this, StocksInActivity.class);
+        startActivityForResult(intent,CODE_IN);
+    }
+    private void stocksout(){
+        Intent intent = new Intent(MainActivity.this, StocksOutActivity.class);
+        startActivityForResult(intent,CODE_OUT);
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -274,12 +288,10 @@ public class MainActivity extends BaseActivity
         if (id == R.id.nav_camera) {
 
         } else if (id == R.id.nav_in) {
-            Intent intent = new Intent(MainActivity.this, StocksInActivity.class);
-            startActivityForResult(intent,CODE_IN);
+           stocksin();
 
         } else if (id == R.id.nav_out) {
-            Intent intent = new Intent(MainActivity.this, StocksOutActivity.class);
-            startActivityForResult(intent,CODE_OUT);
+           stocksout();
 
         } else if (id == R.id.nav_product) {
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);

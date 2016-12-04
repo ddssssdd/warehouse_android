@@ -121,7 +121,7 @@
         android:id="@+id/listDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light">
+        android:background="@drawable/listview_backgroud">
 
     </ListView>
     <TableLayout

@@ -21,9 +21,6 @@
     </string>
     <string name="title_activity_product">销售商品管理</string>
     <string name="title_activity_client">客户管理</string>
-    <string name="title_activity_stocks_in">StocksInActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_stocks_out">StocksOutActivity</string>
+    <string name="title_activity_stocks_in">新建入库单</string>
+    <string name="title_activity_stocks_out">新建出库单</string>
 </resources>

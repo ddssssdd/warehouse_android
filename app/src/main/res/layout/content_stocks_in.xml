@@ -18,8 +18,9 @@
         android:layout_height="wrap_content"
         >
         <TableRow
-
-            android:layout_margin="0.5dip">
+            android:background="@drawable/linearlayout_background"
+            android:layout_margin="0.5dip"
+            android:layout_height="@dimen/tablerow_height">
             <TextView
                 android:text="发票号码"
                 android:layout_width="100dp"
@@ -34,7 +35,9 @@
                 android:layout_height="wrap_content"
                 />
         </TableRow>
-        <TableRow>
+        <TableRow
+            android:layout_height="@dimen/tablerow_height"
+            android:background="@drawable/linearlayout_background">
             <TextView
                 android:text="供应商"
                 android:layout_width="100dp"
@@ -48,7 +51,9 @@
                 android:layout_height="wrap_content"
                 />
         </TableRow>
-        <TableRow>
+        <TableRow
+            android:layout_height="@dimen/tablerow_height"
+            android:background="@drawable/linearlayout_background">
             <TextView
                 android:text="入库日期"
                 android:layout_width="100dp"
@@ -64,7 +69,9 @@
                 android:layout_height="wrap_content"
                 />
         </TableRow>
-        <TableRow>
+        <TableRow
+            android:layout_height="@dimen/tablerow_height"
+            android:background="@drawable/linearlayout_background">
             <TextView
                 android:text="仓库"
                 android:layout_width="100dp"
@@ -91,9 +98,10 @@
             style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog" />
     </RelativeLayout>
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/tablerow_height">
         <TextView
             android:text="商品"
             android:layout_weight="1"
@@ -132,15 +140,18 @@
     </LinearLayout>
     <ListView
         android:id="@+id/listDetails"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/background_light">
+        android:background="@drawable/listview_backgroud">
 
     </ListView>
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <TableRow>
+        <TableRow
+            android:layout_height="@dimen/tablerow_height"
+            android:background="@drawable/linearlayout_background">
             <TextView
                 android:text="合计金额"
                 android:layout_width="100dp"
@@ -156,7 +167,9 @@
                 android:layout_height="wrap_content"
                 />
         </TableRow>
-        <TableRow>
+        <TableRow
+            android:layout_height="@dimen/tablerow_height"
+            android:background="@drawable/linearlayout_background">
             <TextView
                 android:text="合计数量"
                 android:layout_width="100dp"
@@ -172,7 +185,9 @@
                 android:layout_height="wrap_content"
                 />
         </TableRow>
-        <TableRow>
+        <TableRow
+            android:layout_height="@dimen/tablerow_height"
+            android:background="@drawable/linearlayout_background">
             <TextView
                 android:text="备注"
                 android:layout_width="100dp"

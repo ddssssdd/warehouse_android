@@ -10,15 +10,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="com.stevenfu.warehouse.ProductEditActivity">
-    <ProgressBar
-        android:id="@+id/wh_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
+
     <LinearLayout
         android:orientation="horizontal"
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -37,6 +32,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -55,6 +51,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -73,6 +70,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -90,6 +88,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -107,6 +106,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -124,6 +124,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -141,6 +142,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -158,6 +160,7 @@
 
     </LinearLayout>
     <LinearLayout
+        android:background="@drawable/linearlayout_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
