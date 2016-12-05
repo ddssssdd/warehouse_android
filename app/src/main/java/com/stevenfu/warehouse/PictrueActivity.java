@@ -56,6 +56,7 @@ public class PictrueActivity extends AppCompatActivity implements View.OnClickLi
                 //mImageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                 mImageView.setImageBitmap(BitmapFactory.decodeByteArray(UploadFile.decodeBitmap(picturePath), 0, UploadFile.decodeBitmap(picturePath).length));
                 mImageView.setTag(picturePath);
+                doUpload(picturePath);
             }
         } else if (requestCode == REQUEST_CODE_CAMERA) {
             if (resultCode == RESULT_OK) {

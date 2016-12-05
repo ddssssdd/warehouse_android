@@ -30,6 +30,8 @@ public class Url {
     public static String VENDOR_ADD = "vendor/Add";
     public static String VENDOR_EDIT = "vendor/Edit";
 
+    public static String UPLOAD_FILE ="Uploadfile/post";
+
 
 
 

@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.stevenfu.warehouse.settings.Url;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,14 +33,23 @@ import java.util.Map;
 
 public class UploadFile {
     public UploadFile()
-    {}
+    {
+        /*
+        *
+        * {"Id":"12","UserId":"1","FileName":"1480924574.jpg","FileType":"image\/jpeg","FilePath":"\/var\/www\/html\/uploads\/","FullPath":"\/var\/www\/html\/uploads\/1480924574.jpg","RawName":"1480924574","FileExt":".jpg","FileSize":"66.32","IsImage":"1","ImageWidth":"533.00","ImageHeight":"796.00","link":"http:\/\/g.thoughts-go.top\/uploads\/1480924574.jpg"}
+        * {"error":"<p>The filetype you are attempting to upload is not allowed.<\/p>",
+        * "files":{"uploadFile":{"name":"71cf3bc79f3df8dcd227017cc911728b461028c0.jpg","type":"multipart\/form-data","tmp_name":"D:\\xampp563\\tmp\\phpCEE6.tmp","error":0,"size":247059}}}
+        *
+        * */
+
+    }
 
     public void DoTask(String filename){
         final List<String> uploadFiles = new ArrayList<>();
         uploadFiles.add(filename);
         JSONObject json  =new JSONObject();
 
-        final String url = "http://10.4.30.60:8000/warehouse/Uploadfile/post";
+        final String url = Url.SERVER_URL + Url.UPLOAD_FILE; //"http://10.4.30.60:8000/warehouse/Uploadfile/post";
         final Map<String, String> params = new HashMap<>();
         params.put("userId", "" + 1);
         params.put("jsonData", json.toString());
@@ -102,10 +113,11 @@ public class UploadFile {
                     sb1.append(PREFIX);
                     sb1.append(BOUNDARY);
                     sb1.append(LINEND);
-
-                    sb1.append("Content-Disposition: form-data; name=\"" + uploadFile + "\"; filename=\""
+                    String filename = "uploadFile";
+                    String contentType = "image/jpeg";//"multipart/form-data";
+                    sb1.append("Content-Disposition: form-data; name=\"" + filename + "\"; filename=\""
                             + uploadFile + "\"" + LINEND);
-                    sb1.append("Content-Type: multipart/form-data; charset="
+                    sb1.append("Content-Type: "+contentType+"; charset="
                             + CHARSET + LINEND);
                     sb1.append(LINEND);
                     outStream.write(sb1.toString().getBytes());

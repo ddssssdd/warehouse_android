@@ -55,7 +55,12 @@
             android:name=".StocksOutActivity"
             android:label="@string/title_activity_stocks_out"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".PictrueActivity"></activity>
+        <activity android:name=".PictrueActivity" />
+
+        <service
+            android:name=".network.UpdateAppService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

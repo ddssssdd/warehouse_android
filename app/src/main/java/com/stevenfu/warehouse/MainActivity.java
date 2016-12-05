@@ -3,8 +3,10 @@ package com.stevenfu.warehouse;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -43,6 +45,7 @@ import com.stevenfu.warehouse.base.BaseActivity;
 import com.stevenfu.warehouse.models.Stores;
 import com.stevenfu.warehouse.models.WItems;
 import com.stevenfu.warehouse.network.CustomRequest;
+import com.stevenfu.warehouse.network.UpdateAppService;
 import com.stevenfu.warehouse.network.WhRequest;
 import com.stevenfu.warehouse.settings.App;
 import com.stevenfu.warehouse.settings.Url;
@@ -164,6 +167,30 @@ public class MainActivity extends BaseActivity
             }
         });
         queue.add(request);
+
+
+        /* auto update logic, need set up local version first.
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("软件升级")
+                .setMessage("发现新版本,建议立即更新使用.")
+                .setPositiveButton("更新", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        Intent updateIntent =new Intent(MainActivity.this, UpdateAppService.class);
+                        startService(updateIntent);
+                    }
+                })
+                .setNegativeButton("取消",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                });
+        alert.create().show();
+        */
 
     }
     private ArrayList<Stores> storeList;
