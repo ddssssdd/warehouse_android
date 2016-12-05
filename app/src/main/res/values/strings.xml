@@ -23,4 +23,6 @@
     <string name="title_activity_client">客户管理</string>
     <string name="title_activity_stocks_in">新建入库单</string>
     <string name="title_activity_stocks_out">新建出库单</string>
+    <string name="action_done">Done</string>
+    <string name="action_delete">Delete</string>
 </resources>

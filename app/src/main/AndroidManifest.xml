@@ -3,7 +3,9 @@
     package="com.stevenfu.warehouse">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -52,7 +54,8 @@
         <activity
             android:name=".StocksOutActivity"
             android:label="@string/title_activity_stocks_out"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".PictrueActivity"></activity>
     </application>
 
 </manifest>

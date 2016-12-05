@@ -286,6 +286,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
+            startActivity(new Intent(this, PictrueActivity.class));
 
         } else if (id == R.id.nav_in) {
            stocksin();
