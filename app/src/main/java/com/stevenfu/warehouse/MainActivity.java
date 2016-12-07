@@ -334,10 +334,10 @@ public class MainActivity extends BaseActivity
             Intent intent = new Intent(MainActivity.this, VendorActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_logout){
-
-        }else if (id == R.id.nav_system){
             App.Logout(this);
             HandleLogin();
+        }else if (id == R.id.nav_system){
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
