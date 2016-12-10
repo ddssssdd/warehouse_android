@@ -110,7 +110,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Url.SERVER_URL + Url.VENDORS;
-        WhRequest request = new WhRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+        WhRequest request = new WhRequest(this, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleVendorResponseData(response);
@@ -126,7 +126,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         showProgress(true);
 
         String url_store = Url.SERVER_URL + Url.STORES;
-        WhRequest request_store = new WhRequest(Request.Method.POST, url_store, null, new Response.Listener<JSONObject>() {
+        WhRequest request_store = new WhRequest(this, url_store, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleStoreResponseData(response);
@@ -142,7 +142,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
         //init products;
 
         String url_product = Url.SERVER_URL + Url.PRODUCTS;
-        WhRequest request_product = new WhRequest(Request.Method.POST, url_product, null, new Response.Listener<JSONObject>() {
+        WhRequest request_product = new WhRequest(this, url_product, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 products = new WItems<>(response,Products.class);
@@ -375,7 +375,7 @@ public class StocksInActivity extends BaseActivity implements StocksInFragment.O
 
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
-        WhRequest request = new WhRequest(Request.Method.POST, url, map, new Response.Listener<JSONObject>() {
+        WhRequest request = new WhRequest(this, url, map, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleUpdateResult(response);

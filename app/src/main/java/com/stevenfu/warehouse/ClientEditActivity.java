@@ -78,7 +78,7 @@ public class ClientEditActivity extends BaseActivity {
     protected void LoadData(String url,Map parameters){
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
-        WhRequest request = new WhRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
+        WhRequest request = new WhRequest(this, url, parameters, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleResponseData(response);
@@ -131,7 +131,7 @@ public class ClientEditActivity extends BaseActivity {
         }
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
-        WhRequest request = new WhRequest(Request.Method.POST, url, map, new Response.Listener<JSONObject>() {
+        WhRequest request = new WhRequest(this, url, map, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleUpdateResult(response);

@@ -27,6 +27,11 @@ public class App {
         SharedPreferences settings = context.getSharedPreferences(PREFS,0);
         return settings.getInt("UserId",0);
     }
+    public static String Token(Activity context)
+    {
+        SharedPreferences settings = context.getSharedPreferences(PREFS,0);
+        return settings.getString("Token","android");
+    }
     public static void Login(Activity context,int userId,String username,String password)
     {
         SharedPreferences settings = context.getSharedPreferences(PREFS,0);
@@ -43,6 +48,9 @@ public class App {
         SharedPreferences settings = context.getSharedPreferences(PREFS,0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("IsLogin",false);
+        editor.putInt("UserId",0);
+        editor.putString("UserName","");
+        editor.putString("Token","");
         editor.remove("LoginDateTime");
         editor.commit();
 

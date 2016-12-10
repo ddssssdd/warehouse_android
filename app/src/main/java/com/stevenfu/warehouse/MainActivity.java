@@ -120,42 +120,25 @@ public class MainActivity extends BaseActivity
     private void initData(){
         TextView txtMain = (TextView)findViewById(R.id.txtMain);
         txtMain.setText(String.format("Welcome %s",App.Username(this)));
-        /*
-        RequestQueue queue = Volley.newRequestQueue(this);
 
-        request = new WhRequest<Stores>(this,Url.STORES,null,new IItemsAdapter(){
-
-            @Override
-            public View getView(LayoutInflater inflater, int i, View convertView, ViewGroup parent) {
-                View view;
-                if (convertView == null){
-                    view = inflater.inflate(R.layout.store_item,parent,false);
-                }else{
-                    view = convertView;
-                }
-
-                TextView textName = (TextView)view.findViewById(R.id.txtName);
-                final Stores store = storeList.get(i);
-                textName.setText(store.Name);
-                TextView textPhone = (TextView)view.findViewById(R.id.txtPhone);
-                textPhone.setText(store.Phone);
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        SelectStore(store);
-                    }
-                });
-
-                return view;
-            }
-        },Stores.class);
-        request.BindListView = (ListView)findViewById(R.id.listStore);
-        queue.add(request);
-        */
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Url.SERVER_URL + Url.STORES;
-        WhRequest request = new WhRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+        String url = Url.SERVER_URL + "home/session";
+        WhRequest request = new WhRequest(this, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                HandleError(error);
+            }
+        });
+        queue.add(request);
+
+        String url_stores = Url.SERVER_URL + Url.STORES;
+        WhRequest request_stores = new WhRequest(this, url_stores, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleStoreData(response);
@@ -166,7 +149,7 @@ public class MainActivity extends BaseActivity
                 HandleError(error);
             }
         });
-        queue.add(request);
+        queue.add(request_stores);
 
 
         /* auto update logic, need set up local version first.
@@ -245,9 +228,10 @@ public class MainActivity extends BaseActivity
     {
         if (requestCode==CODE_LOGIN) { //for login
             if (navigationView!=null){
-                Snackbar.make(navigationView, "登录成功！欢迎会来", Snackbar.LENGTH_LONG)
+                Snackbar.make(navigationView, "登录成功！欢迎回来", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
+            initData();
 
         }else if (requestCode == CODE_IN){
             if (resultCode==1){// save success

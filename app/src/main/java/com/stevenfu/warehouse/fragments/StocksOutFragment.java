@@ -172,7 +172,7 @@ public class StocksOutFragment extends DialogFragment {
         //init products;
         RequestQueue queue = Volley.newRequestQueue(this.getContext());
         String url_product = String.format(Url.SERVER_URL + Url.STOCKS_PRODUCTS,store.Id);
-        WhRequest request_product = new WhRequest(Request.Method.POST, url_product, null, new Response.Listener<JSONObject>() {
+        WhRequest request_product = new WhRequest(this.getActivity(), url_product, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 handleProductsResponse(response);

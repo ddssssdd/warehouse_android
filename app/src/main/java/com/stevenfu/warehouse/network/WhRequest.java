@@ -1,5 +1,7 @@
 package com.stevenfu.warehouse.network;
 
+import android.app.Activity;
+import android.app.VoiceInteractor;
 import android.content.Context;
 import android.util.Log;
 import android.widget.ListView;
@@ -14,12 +16,14 @@ import com.stevenfu.warehouse.adpaters.IItemsAdapter;
 import com.stevenfu.warehouse.adpaters.ItemsAdapter;
 import com.stevenfu.warehouse.base.Entity;
 import com.stevenfu.warehouse.models.WItems;
+import com.stevenfu.warehouse.settings.App;
 import com.stevenfu.warehouse.settings.Url;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,40 +34,19 @@ public class WhRequest<T extends Entity> extends Request<JSONObject>{
     private Response.Listener<JSONObject> listener;
     private Map<String, String> params;
     private IItemsAdapter mAdapter;
-    private Context mContext;
-    private Class mClass;
-    public ListView BindListView;
-    public WhRequest(Context context, String url, Map<String, String> params, IItemsAdapter itemAdapter,Class entityClass)
-    {
-        super(Method.POST, Url.SERVER_URL + url, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+    private Activity mContext;
 
-            }
-        });
-        this.listener = new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                HandleResponseJson(response);
-            }
-        };
-        this.params = params;
-        mAdapter = itemAdapter;
+    public WhRequest(Activity context, String url, Map<String, String> params,
+                         Response.Listener<JSONObject> reponseListener, Response.ErrorListener errorListener) {
+        super(Request.Method.POST, url, errorListener);
         mContext = context;
-        mClass = entityClass;
-    }
-
-    public WhRequest(String url, Map<String, String> params,
-                         Response.Listener<JSONObject> reponseListener, Response.ErrorListener errorListener) {
-        super(Request.Method.GET, url, errorListener);
         this.listener = reponseListener;
-        this.params = params;
-    }
+        if (params==null){
+            params = new HashMap<>();
+        }
+        params.put("userId",String.format("%d", App.UserId(context)));
+        params.put("token",App.Token(context));
 
-    public WhRequest(int method, String url, Map<String, String> params,
-                         Response.Listener<JSONObject> reponseListener, Response.ErrorListener errorListener) {
-        super(method, url, errorListener);
-        this.listener = reponseListener;
         this.params = params;
         Log.d("Http",url);
     }
@@ -72,16 +55,7 @@ public class WhRequest<T extends Entity> extends Request<JSONObject>{
             throws com.android.volley.AuthFailureError {
         return params;
     };
-    protected void HandleResponseJson(JSONObject response)
-    {
-        List = new WItems<T>(response,mClass);
-        if (List.status){
-            Adapter = new ItemsAdapter(mContext,List,mAdapter);
-            if (BindListView!=null){
-                BindListView.setAdapter(Adapter);
-            }
-        }
-    }
+
     public WItems<T> List;
     public ItemsAdapter Adapter;
     @Override

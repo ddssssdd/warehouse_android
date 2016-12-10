@@ -76,7 +76,7 @@ public class ProductActivity extends BaseActivity {
     protected void LoadData(String url,Map parameters){
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
-        WhRequest request = new WhRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
+        WhRequest request = new WhRequest(this, url, parameters, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleResponseData(response);

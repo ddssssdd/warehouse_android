@@ -48,7 +48,7 @@ public class StoreProductsActivity extends BaseActivity {
             Map map = new HashMap();
             map.put("store_id",String.format("%d",store_id));
 
-            WhRequest request = new WhRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            WhRequest request = new WhRequest(this, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     HandleStoreData(response);

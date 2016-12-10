@@ -106,7 +106,7 @@ public class StocksOutActivity extends BaseActivity implements StocksOutFragment
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Url.SERVER_URL + Url.CLIENTS;
-        WhRequest request = new WhRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+        WhRequest request = new WhRequest(this, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleClientResponseData(response);
@@ -122,7 +122,7 @@ public class StocksOutActivity extends BaseActivity implements StocksOutFragment
         showProgress(true);
 
         String url_store = Url.SERVER_URL + Url.STORES;
-        WhRequest request_store = new WhRequest(Request.Method.POST, url_store, null, new Response.Listener<JSONObject>() {
+        WhRequest request_store = new WhRequest(this, url_store, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 stores = new WItems<>(response,Stores.class);
@@ -318,7 +318,7 @@ public class StocksOutActivity extends BaseActivity implements StocksOutFragment
 
         showProgress(true);
         RequestQueue queue = Volley.newRequestQueue(this);
-        WhRequest request = new WhRequest(Request.Method.POST, url, map, new Response.Listener<JSONObject>() {
+        WhRequest request = new WhRequest(this, url, map, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 HandleUpdateResult(response);
